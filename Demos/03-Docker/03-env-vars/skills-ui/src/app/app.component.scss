@@ -1,0 +1,18 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.navbar{
+    background-color: lightslategray;
+    color: white;
+    height: 10vh;
+    padding: 1.8rem 1em;
+}
+
+.main{
+    background-color: lightgray;
+    height: 90vh;
+    padding: 1rem;
+}

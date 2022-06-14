@@ -1,0 +1,5 @@
+<h2>Using url: {{url}}</h2>
+<hr>
+<app-skills-list [skills]="skills" (onSkillSelected)="skillSelected($event)"></app-skills-list>
+<hr>
+<pre>Selected Skill {{ selected | json}}</pre>

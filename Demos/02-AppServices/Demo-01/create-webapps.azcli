@@ -1,0 +1,19 @@
+rnd=$RANDOM
+grp=az204-m01-appservices-$rnd
+loc=westeurope
+appPlan=appservices-$rnd
+pubprofileapp=publishing-profile-$rnd
+
+# create a resource group
+az group create -n $grp -l $loc
+
+# create an App Service plan
+az appservice plan create -n $appPlan -g $grp --sku F1
+
+# create cliapp
+az webapp create -n cli-api-$rnd -g $grp --plan $appPlan --runtime "DOTNET|6.0"
+
+# create and upload blazor app using az webapp up - execute from within ./blazor-skils
+cd blazor-skills
+az webapp up -n blazor-skills-$rnd -g $grp -p $appPlan -l $loc -r "DOTNET|6.0"
+cd ..

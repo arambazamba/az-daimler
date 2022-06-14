@@ -1,0 +1,16 @@
+{
+	"name": "Node.js & TypeScript",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": { 
+			"VARIANT": "16-bullseye"
+		}
+	},
+	"settings": {},
+	"extensions": [
+		"angular.ng-template",
+		"esbenp.prettier-vscode",
+        "mikael.angular-beastcode"
+	],
+	"remoteUser": "node"
+}

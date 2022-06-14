@@ -1,0 +1,11 @@
+rnd=$RANDOM
+grp=az204-m01-webjobs-$rnd
+plan=webjobs-$rnd
+app=webjobs-app-$rnd
+loc=westeurope
+
+az group create -n $grp -l $loc
+
+az appservice plan create -n $appPlan -g $grp --sku F1
+
+az webapp create -n $app-$rnd -g $grp --plan $appPlan --runtime "DOTNET|6.0"

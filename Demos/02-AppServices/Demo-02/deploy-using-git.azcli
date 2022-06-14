@@ -1,0 +1,13 @@
+rnd=$RANDOM
+grp=az204-m01-gitdeploy-$rnd
+appPlan=gitdeploy-$rnd
+app=gitdeploy-website-$rnd
+gitrepo="https://github.com/ARambazamba/GitDeployApp"
+
+az group create -n $grp -l westeurope
+
+az appservice plan create -n $appPlan -g $grp --sku F1
+
+az webapp create -g $grp -p $appPlan -n $app
+
+az webapp deployment source config -n $app -g $grp -u $gitrepo --branch master

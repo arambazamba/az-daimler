@@ -1,0 +1,15 @@
+{
+    "name": "",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "VARIANT": "6.0"
+        }
+    },
+    "settings": {},
+    "extensions": [
+        "ms-dotnettools.csharp",
+        "fudge.auto-using"
+    ],
+    "remoteUser": "vscode"
+}
