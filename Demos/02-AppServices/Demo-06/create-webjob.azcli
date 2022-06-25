@@ -2,10 +2,18 @@ rnd=$RANDOM
 grp=cloud-webjobs-$rnd
 plan=webjobs-$rnd
 app=webjobs-app-$rnd
+acct=webjobs$rnd
+queue=jobqueue
 loc=westeurope
 
 az group create -n $grp -l $loc
 
-az appservice plan create -n $appPlan -g $grp --sku F1
+az appservice plan create -n $plan -g $grp --sku F1
+az webapp create -n $app -g $grp --plan $plan --runtime "DOTNET|6.0"
 
-az webapp create -n $app-$rnd -g $grp --plan $appPlan --runtime "DOTNET|6.0"
+az storage account create -l $loc -n $acct -g $grp --sku Standard_LRS
+key=$(az storage account keys list -n $acct --query "[0].value")
+az storage queue create -n $queue --account-key $key --account-name $acct
+
+conStr=$(az storage account show-connection-string -n $acct -g $grp --query connectionString -o tsv)
+echo '*** Connection String for .NET Core proj: ' $conStr
