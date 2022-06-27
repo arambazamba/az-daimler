@@ -10,10 +10,12 @@
 	
 ## Day 2
 
-- Azure Functions 
-- Async Processing
-- Introduction to Message & Event Driven Applications (Service Bus, Event Grid, Event Hub)
-- When to use them including Introduction to Azure Cloud Design Patterns
-- Overview Api Management, Application Gatweay
-- Modul 4: Entwicklung für die Autoskalierung
-- Modul 5: Entwicklung azurblauer kognitiver Servicelösungen
+- Autoscaling Patterns
+- Implement large-scale, parallel, and high-performance apps by using batches
+- Implement resilient apps by using queues
+- Implement code that addresses a transient state
+- Architecture & Cloud Design Patterns
+- Servierless: Azure Functions 
+- Async Processing: Introduction to Message & Event Driven Applications (Service Bus, Event Grid, Event Hub)
+- Api Management, Application Gatweay
+- Cognitive Services
