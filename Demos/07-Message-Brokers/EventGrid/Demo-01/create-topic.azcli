@@ -1,0 +1,27 @@
+rnd=$RANDOM
+loc=westeurope
+grp=az204-m09-evtgrid-customevt-$rnd
+topic=foodorder-topic-$rnd
+storage=orderprocessor$rnd
+app=order-processor-$rnd
+
+az group create --name $grp --location $loc
+
+# create topic
+az eventgrid topic create --resource-group $grp --name $topic --location $loc
+endpoint=$(az eventgrid topic show --name $topic -g $grp --query "endpoint" --output tsv)
+key=$(az eventgrid topic key list --name $topic -g $grp --query "key1" --output tsv)
+
+# create function app which will host the consumer
+az storage account  create -n $storage -g $grp
+az functionapp create -n $app -g $grp -s $storage --consumption-plan-location $loc --runtime dotnet --functions-version 4
+
+# Deploy to function app
+cd OrderProcessorAzFunct
+func azure functionapp publish $app --csharp
+cd ..
+
+echo '** Update in PublishEvtTopic:'
+echo '** Topic Endpoint: ' $endpoint
+echo '** Topic Key: ' $key
+echo '** rnd: ' $rnd
