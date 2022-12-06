@@ -8,9 +8,10 @@ namespace Integrations
     public class processQueue
     {
         [FunctionName("processQueue")]
-        public void Run([QueueTrigger("scaling-queue", Connection = "queuestorage")]string myQueueItem, ILogger log)
+        public void Run([QueueTrigger("scaling-queue", Connection = "AzureStorageAccount")]string item, ILogger log)
         {
-            log.LogInformation($"C# Queue trigger function processed: {myQueueItem}");
+            System.Threading.Thread.Sleep(300);
+            log.LogInformation($"C# Queue trigger function processed: {item}");
         }
     }
 }
