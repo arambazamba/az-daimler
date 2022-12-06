@@ -55,9 +55,9 @@
                     "maxReplicas": 10,
                     "rules": [
                         {
-                            "name": "myqueuerule",
+                            "name": "queuescalerule",
                             "azureQueue": {
-                                "queueName": "myqueue",
+                                "queueName": "scaling-queue",
                                 "queueLength": 10,
                                 "auth": [
                                     {

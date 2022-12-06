@@ -1,5 +1,5 @@
 rnd=10949
-grp=cloudborn-m05-$rnd
+grp=cloudborn-keda-scaling-$rnd
 loc=westeurope
 contaienrenv=scaling-app-env
 acct=msgqueue$rnd
@@ -14,7 +14,9 @@ key=$(az storage account keys list -n $acct --query "[0].value")
 az storage queue create -n $queue --account-key $key --account-name $acct
 queueConStr=$(az storage account show-connection-string -n $acct -g $grp --query connectionString -o tsv)
 
-az storage message put --content "Hello Queue Reader App" --queue-name $queue --connection-string $queueConStr
+messageA=$(echo "Hello Queue Reader App" | base64)
+
+az storage message put --content $messageA --queue-name $queue --connection-string $queueConStr
 
 az deployment group create -g $grp --template-file ./background-reader.json --parameters \
     environment_name=$contaienrenv \
