@@ -1,0 +1,39 @@
+rnd=$RANDOM
+grp=cloudborn-m05-$rnd
+loc=westeurope
+contaienrenv=scaling-app-env
+acct=msgqueue$rnd
+queue=scaling-queue
+
+az group create -n $grp -l $loc
+
+az containerapp env create -n $contaienrenv -g $grp --location $loc
+
+az storage account create -n $acct -g $grp --kind StorageV2 --sku Standard_LRS
+key=$(az storage account keys list -n $acct --query "[0].value")
+az storage queue create -n $queue --account-key $key --account-name $acct
+queueConStr=$(az storage account show-connection-string -n $acct -g $grp --query connectionString -o tsv)
+
+az storage message put --content "Hello Queue Reader App" --queue-name $queue --connection-string $queueConStr
+
+az deployment group create -g $grp --template-file ./background-reader.json --parameters \
+    environment_name=$contaienrenv \
+    queueconnection=$queueConStr \
+    location=$loc
+
+logClientId=`az containerapp env show -n $contaienrenv -g $grp --query properties.appLogsConfiguration.logAnalyticsConfiguration.customerId --out tsv`
+
+az monitor log-analytics query --workspace $logClientId \
+  --analytics-query "ContainerAppConsoleLogs_CL | where ContainerAppName_s == 'queuereader' and Log_s contains 'Message ID' | project Time=TimeGenerated, AppName=ContainerAppName_s, Revision=RevisionName_s, Container=ContainerName_s, Message=Log_s | take 5" --out table    
+
+
+# Add another message to the queue and see the logs again
+az storage message put --content "Another msg" --queue-name $queue --connection-string $queueConStr  
+
+# Send a bunch of messages to the queue
+i=0
+while [ $i -ne 1000 ]
+do
+    i=$(($i+1))
+    az storage message put --content "msg "$i --queue-name $queue --connection-string $queueConStr  
+done
