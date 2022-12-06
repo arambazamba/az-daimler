@@ -1,3 +1,4 @@
 # Autoscaling
 
-- Show Autoscaling auf AppService
+- Show Autoscaling with AppService
+- Scaling with Azure Contaiener Apps
