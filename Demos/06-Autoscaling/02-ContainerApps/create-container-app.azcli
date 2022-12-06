@@ -1,4 +1,4 @@
-rnd=$RANDOM
+rnd=10949
 grp=cloudborn-m05-$rnd
 loc=westeurope
 contaienrenv=scaling-app-env
@@ -28,12 +28,22 @@ az monitor log-analytics query --workspace $logClientId \
 
 
 # Add another message to the queue and see the logs again
-az storage message put --content "Another msg" --queue-name $queue --connection-string $queueConStr  
+message=$(echo "Hello Queue Reader App" | base64)
+
+#Encode to bytes
+az storage message put --content $message --queue-name $queue --connection-string $queueConStr  
 
 # Send a bunch of messages to the queue
 i=0
 while [ $i -ne 1000 ]
 do
     i=$(($i+1))
-    az storage message put --content "msg "$i --queue-name $queue --connection-string $queueConStr  
+    msg=$(echo "Hello Queue Reader App $i" | base64)
+
+    az storage message put --content $msg --queue-name $queue --connection-string $queueConStr  
 done
+
+# stop container app
+
+az containerapp revision deactivate -g $grp -n $contaienrenv --revision --name queuereader--o2qbdtq
+                                    
