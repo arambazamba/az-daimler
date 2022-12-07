@@ -7,16 +7,26 @@ queue=scaling-queue
 
 az group create -n $grp -l $loc
 
-az containerapp env create -n $contaienrenv -g $grp --location $loc
-
+# create storage queue
 az storage account create -n $acct -g $grp --kind StorageV2 --sku Standard_LRS
 key=$(az storage account keys list -n $acct --query "[0].value")
 az storage queue create -n $queue --account-key $key --account-name $acct
 queueConStr=$(az storage account show-connection-string -n $acct -g $grp --query connectionString -o tsv)
 
-messageA=$(echo "Hello Queue Reader App" | base64)
+# put a base64 encoded message in the queue -> base 64 encoding is required for the message to be consumed in an Azure Function
+messageOne=$(echo "Hello Queue Reader App" | base64)
+az storage message put --content $messageOne --queue-name $queue --connection-string $queueConStr
 
-az storage message put --content $messageA --queue-name $queue --connection-string $queueConStr
+# start container locally and show how it fetches the message
+docker run -d --rm -p 5052:80 -e "queueconnection="$queueConStr queueprocessor
+
+
+# Add another message to the queue and see the logs again
+messageTwo=$(echo "Another Hello to Queue Reader App" | base64)
+az storage message put --content $messageTwo --queue-name $queue --connection-string $queueConStr  
+
+#create container app
+az containerapp env create -n $contaienrenv -g $grp --location $loc
 
 az deployment group create -g $grp --template-file ./background-reader.json --parameters \
     environment_name=$contaienrenv \
@@ -27,13 +37,6 @@ logClientId=`az containerapp env show -n $contaienrenv -g $grp --query propertie
 
 az monitor log-analytics query --workspace $logClientId \
   --analytics-query "ContainerAppConsoleLogs_CL | where ContainerAppName_s == 'queuereader' and Log_s contains 'Message ID' | project Time=TimeGenerated, AppName=ContainerAppName_s, Revision=RevisionName_s, Container=ContainerName_s, Message=Log_s | take 5" --out table    
-
-
-# Add another message to the queue and see the logs again
-message=$(echo "Hello Queue Reader App" | base64)
-
-#Encode to bytes
-az storage message put --content $message --queue-name $queue --connection-string $queueConStr  
 
 # Send a bunch of messages to the queue
 i=0

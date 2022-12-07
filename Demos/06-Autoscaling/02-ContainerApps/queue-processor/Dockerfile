@@ -17,7 +17,7 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
 COPY --from=installer-env ["/home/site/wwwroot", "/home/site/wwwroot"]
 
 # docker build --rm -f Dockerfile -t queueprocessor .
-# docker run -d --rm -p 5052:80 -e "AzureStorageAccount=DefaultEndpointsProtocol=https;AccountName=msgqueue10949;AccountKey=AVL5+aRkH8SO66WfIDFKPEYcFvpPpJEkqVSCNSGvh2khTSO6P3Oskcjk/ZBYqGdrmmqaFUazzlxf+ASt8olW2w==;EndpointSuffix=core.windows.net" -e "queueconnection=DefaultEndpointsProtocol=https;AccountName=msgqueue10949;AccountKey=AVL5+aRkH8SO66WfIDFKPEYcFvpPpJEkqVSCNSGvh2khTSO6P3Oskcjk/ZBYqGdrmmqaFUazzlxf+ASt8olW2w==;EndpointSuffix=core.windows.net" queueprocessor
+# docker run -d --rm -p 5052:80 -e "queueconnection=DefaultEndpointsProtocol=https;AccountName=msgqueue10949;AccountKey=AVL5+aRkH8SO66WfIDFKPEYcFvpPpJEkqVSCNSGvh2khTSO6P3Oskcjk/ZBYqGdrmmqaFUazzlxf+ASt8olW2w==;EndpointSuffix=core.windows.net" queueprocessor
 
 # docker tag queueprocessor arambazamba/queueprocessor
 # docker push arambazamba/queueprocessor

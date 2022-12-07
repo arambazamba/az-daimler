@@ -36,7 +36,7 @@
             "template": {
                 "containers": [
                     {
-                        "image": "mcr.microsoft.com/azuredocs/containerapps-queuereader",
+                        "image": "arambazamba/queueprocessor",
                         "name": "queuereader",
                         "env": [
                             {
@@ -45,6 +45,10 @@
                             },
                             {
                                 "name": "QueueConnectionString",
+                                "secretRef": "queueconnection"
+                            },
+                            {
+                                "name": "AzureWebJobsStorage",
                                 "secretRef": "queueconnection"
                             }
                         ]
