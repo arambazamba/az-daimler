@@ -1,4 +1,6 @@
+# Scaling an Container hosted Azure Function using KEDA
 
+- Execute `create-container-app.azcli` to run the demo.
 
 Log Query:
 

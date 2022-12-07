@@ -46,10 +46,6 @@
                             {
                                 "name": "QueueConnectionString",
                                 "secretRef": "queueconnection"
-                            },
-                            {
-                                "name": "AzureWebJobsStorage",
-                                "secretRef": "queueconnection"
                             }
                         ]
                     }
