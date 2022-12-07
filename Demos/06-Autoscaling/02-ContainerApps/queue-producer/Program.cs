@@ -37,40 +37,5 @@ namespace QueueApp
 
             await q.SendMessageAsync(msg);
         }
-
-        // static async Task<string> RetrieveNextMessageAsync(QueueClient q)
-        // {
-        //     if (await q.ExistsAsync())
-        //     {
-        //         QueueProperties properties = await q.GetPropertiesAsync();
-
-        //         if (properties.ApproximateMessagesCount > 0)
-        //         {
-        //             QueueMessage[] retrievedMessage = await q.ReceiveMessagesAsync(1);
-        //             string theMessage = retrievedMessage[0].MessageText;
-        //             await q.DeleteMessageAsync(retrievedMessage[0].MessageId, retrievedMessage[0].PopReceipt);
-        //             return theMessage;
-        //         }
-        //         else
-        //         {
-        //             Console.Write("The queue is empty. Attempt to delete it? (Y/N) ");
-        //             string response = Console.ReadLine();
-
-        //             if (response.ToUpper() == "Y")
-        //             {
-        //                 await q.DeleteIfExistsAsync();
-        //                 return "The queue was deleted.";
-        //             }
-        //             else
-        //             {
-        //                 return "The queue was not deleted.";
-        //             }
-        //         }
-        //     }
-        //     else
-        //     {
-        //         return "The queue does not exist. Add a message to the command line to create the queue and store the message.";
-        //     }
-        // }
     }
 }
