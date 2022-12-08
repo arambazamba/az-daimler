@@ -1,4 +1,4 @@
-rnd=12626
+rnd=$RANDOM
 loc=westeurope
 grp=az204-m08-apim-$rnd
 apimgmt=fooddealer-$rnd

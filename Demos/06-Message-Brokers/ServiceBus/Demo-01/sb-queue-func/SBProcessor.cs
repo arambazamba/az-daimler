@@ -3,12 +3,12 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 
-namespace Integrations
+namespace Company.Function
 {
-    public static class FoodQueueReceiver
+    public class SBProcessor
     {
-        [FunctionName("FoodQueueReceiver")]
-        public static void Run([ServiceBusTrigger("food-queue", Connection = "foodappdev_SERVICEBUS")]string myQueueItem, ILogger log)
+        [FunctionName("SBProcessor")]
+        public void Run([ServiceBusTrigger("food-queue", Connection = "foodappdev_SERVICEBUS")]string myQueueItem, ILogger log)
         {
             log.LogInformation($"C# ServiceBus queue trigger function processed message: {myQueueItem}");
         }
