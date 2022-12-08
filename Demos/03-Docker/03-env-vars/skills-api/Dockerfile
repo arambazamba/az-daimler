@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /build
 
 COPY . .
-RUN dotnet restore "SkillsApi.csproj"
+RUN dotnet restore "skills-api.csproj"
 RUN dotnet publish -c Release -o /app
 
 # Copy output of build to runtime image
